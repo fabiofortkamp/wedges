@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
+import numpy as np
 
 FIGSIZE_INCHES = 4
 
@@ -27,14 +28,16 @@ def create_magnet_IV_figure_template(params):
 
     width_IV = R4 - R3
     n_IV = int(params['n_IV'])
-    delta_phi_S_IV = params['delta_phi_S_IV']
+    
+    delta_phi_S_values = params['delta_phi_S_values']
+    phi_initial = np.append(np.array([0,]),np.cumsum(delta_phi_S_values)[:-1])
+    phi_final = phi_initial + delta_phi_S_values
+
     for i in range(0, n_IV):
-        theta_0 = i * delta_phi_S_IV
-        theta_1 = (i + 1) * delta_phi_S_IV
         magnet_segment = Wedge((0, 0),
                                1e3 * R4,
-                               theta_0,
-                               theta_1,
+                               phi_initial[i],
+                               phi_final[i],
                                1e3 * width_IV,
                                color='k',
                                fill=False)
@@ -48,9 +51,15 @@ params = {
     'R3': 173e-3,
     'R4': 396e-3,
     'R5': 414e-3,
-    'n_IV': 5,
-    'delta_phi_S_IV': 12,
+    'n_IV': 3,
+    'phi_S_IV': 45
     }
+
+fractions_phi_S = np.array([40,40,20])
+
+assert sum(fractions_phi_S) == 100
+
+params['delta_phi_S_values'] = np.array(fractions_phi_S)/100 * params["phi_S_IV"]
 
 fig, axes = create_magnet_IV_figure_template(params)
 plt.show()
