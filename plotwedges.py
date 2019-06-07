@@ -33,6 +33,22 @@ def create_magnet_IV_figure_template(params):
     phi_initial = np.append(np.array([0,]),np.cumsum(delta_phi_S_values)[:-1])
     phi_final = phi_initial + delta_phi_S_values
 
+    
+    r_mean  = 1e3 * (R4 + R3)/2
+    l = 0.4*(r_mean * np.deg2rad(delta_phi_S_values))
+    phi_mean = np.deg2rad(0.5 * (phi_initial + phi_final))
+
+    alpha = np.deg2rad(params['alpha_values'])
+
+    x_mean = r_mean * np.cos(phi_mean)
+    y_mean = r_mean * np.sin(phi_mean)
+
+    xtail = x_mean - l/2 * np.cos(alpha)
+    ytail = y_mean - l/2 * np.sin(alpha)
+
+    dxarrow = l*np.cos(alpha)
+    dyarrow = l*np.sin(alpha)
+
     for i in range(0, n_IV):
         magnet_segment = Wedge((0, 0),
                                1e3 * R4,
@@ -43,6 +59,14 @@ def create_magnet_IV_figure_template(params):
                                fill=False)
         axes.add_artist(magnet_segment)
 
+        axes.arrow(
+        xtail[i], ytail[i], 
+        dxarrow[i], dyarrow[i],
+        width=0.8,
+        head_width=8,
+        ec='k',
+        fc='k')
+
     return fig, axes
 
 params = {
@@ -51,15 +75,18 @@ params = {
     'R3': 173e-3,
     'R4': 396e-3,
     'R5': 414e-3,
-    'n_IV': 3,
+    'n_IV': 5,
     'phi_S_IV': 45
     }
 
-fractions_phi_S = np.array([40,40,20])
+fractions_phi_S = np.array([20,20,20,20,20])
 
 assert sum(fractions_phi_S) == 100
 
 params['delta_phi_S_values'] = np.array(fractions_phi_S)/100 * params["phi_S_IV"]
 
+params['alpha_values'] = np.array([13,26,68,88,113])
+
 fig, axes = create_magnet_IV_figure_template(params)
+
 plt.show()
