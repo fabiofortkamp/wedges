@@ -318,19 +318,19 @@ params = {
     'R1': 30e-3,
     'R2': 126e-3,
     'R3': 173e-3,
-    'R4': 396e-3,
-    'R5': 414e-3,
+    'R4': 397e-3,
+    'h_fc': 25e-3,
     'n_IV': 4,
     'phi_S_IV': 60
     }
-
+params["R5"] = params["R4"] + params["h_fc"]
 fractions_phi_S = np.array([20,20,20,40])
 
 assert sum(fractions_phi_S) == 100
 
 params['delta_phi_S_values'] = np.array(fractions_phi_S)/100 * params["phi_S_IV"]
 
-params['alpha_values'] = np.array([0,18,76,109])
+params['alpha_values'] = np.array([0,23,73,110])
 
 fig, axes = create_magnet_IV_figure_full(params)
 
