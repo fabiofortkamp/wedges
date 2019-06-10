@@ -38,7 +38,9 @@ def create_magnet_IV_figure_template(params):
     l = 0.4*(r_mean * np.deg2rad(delta_phi_S_values))
     phi_mean = np.deg2rad(0.5 * (phi_initial + phi_final))
 
-    alpha = np.deg2rad(params['alpha_values'])
+    alpha_degress = params['alpha_values']
+    alpha = np.deg2rad(alpha_degress)
+    alpha_text = ["%d°" %(phi,) for phi in alpha_degress]
 
     x_mean = r_mean * np.cos(phi_mean)
     y_mean = r_mean * np.sin(phi_mean)
@@ -48,6 +50,9 @@ def create_magnet_IV_figure_template(params):
 
     dxarrow = l*np.cos(alpha)
     dyarrow = l*np.sin(alpha)
+
+    xhead = xtail + dxarrow
+    yhead = ytail + dyarrow
 
     r_text_width = 7.5e2 * R3
     x_text_width = r_text_width * np.cos(phi_mean)
@@ -73,6 +78,13 @@ def create_magnet_IV_figure_template(params):
         fc='k')
 
         axes.text(
+            1.05*xhead[i],
+            1.05*yhead[i],
+            alpha_text[i],
+            fontsize=14
+        )
+
+        axes.text(
             x_text_width[i],
             y_text_width[i],
             text_width[i])
@@ -86,6 +98,11 @@ def create_magnet_IV_figure_template(params):
         """,
         ha='left'
         )
+
+    axes.text(
+        0.1,0.9,
+        "Arrows angles are in respect to x axis",
+        transform=axes.transAxes)
 
     return fig, axes
 
