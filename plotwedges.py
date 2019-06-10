@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 import numpy as np
 
-FIGSIZE_INCHES = 4
+FIGSIZE_INCHES = 5
 
 def create_magnet_IV_figure_template(params):
     """
@@ -49,6 +49,11 @@ def create_magnet_IV_figure_template(params):
     dxarrow = l*np.cos(alpha)
     dyarrow = l*np.sin(alpha)
 
+    r_text_width = 7.5e2 * R3
+    x_text_width = r_text_width * np.cos(phi_mean)
+    y_text_width = r_text_width * np.sin(phi_mean)
+    text_width = ["%d°" %(phi,) for phi in delta_phi_S_values]
+
     for i in range(0, n_IV):
         magnet_segment = Wedge((0, 0),
                                1e3 * R4,
@@ -67,6 +72,21 @@ def create_magnet_IV_figure_template(params):
         ec='k',
         fc='k')
 
+        axes.text(
+            x_text_width[i],
+            y_text_width[i],
+            text_width[i])
+
+    axes.text(
+        0,
+        0,
+        """
+        Angular
+        widths
+        """,
+        ha='left'
+        )
+
     return fig, axes
 
 params = {
@@ -75,17 +95,17 @@ params = {
     'R3': 173e-3,
     'R4': 396e-3,
     'R5': 414e-3,
-    'n_IV': 3,
-    'phi_S_IV': 45
+    'n_IV': 4,
+    'phi_S_IV': 60
     }
 
-fractions_phi_S = np.array([40,40,20])
+fractions_phi_S = np.array([20,20,20,40])
 
 assert sum(fractions_phi_S) == 100
 
 params['delta_phi_S_values'] = np.array(fractions_phi_S)/100 * params["phi_S_IV"]
 
-params['alpha_values'] = np.array([11,90,108])
+params['alpha_values'] = np.array([0,18,76,109])
 
 fig, axes = create_magnet_IV_figure_template(params)
 
