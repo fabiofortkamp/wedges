@@ -128,6 +128,12 @@ def create_magnet_IV_figure_template(params):
         "Arrows angles are in respect to x axis",
         transform=axes.transAxes)
 
+    axes.text(
+        0.05, 0.7,
+        "ID = %.2f mm\nOD = %.2f mm""" %(2e3*R3,2e3*R4),
+        transform=axes.transAxes
+    )
+
     return fig, axes
 
 params = {
