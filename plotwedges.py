@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from matplotlib.patches import Wedge
+from matplotlib.patches import Wedge, FancyArrowPatch
 import numpy as np
 
 FIGSIZE_INCHES = 5
@@ -59,6 +59,19 @@ def create_magnet_IV_figure_template(params):
     y_text_width = r_text_width * np.sin(phi_mean)
     text_width = ["%d°" %(phi,) for phi in delta_phi_S_values]
 
+    r_angular = 9.5e2 * R3
+    phi_initial_rad = np.deg2rad(phi_initial)
+    phi_final_rad = np.deg2rad(phi_final)
+
+    x_angular_tail = r_angular * np.cos(phi_initial_rad)
+    y_angular_tail = r_angular * np.sin(phi_initial_rad)
+
+    x_angular_head = r_angular * np.cos(phi_final_rad)
+    y_angular_head = r_angular * np.sin(phi_final_rad)
+
+    dx_angular = x_angular_head - x_angular_tail
+    dy_angular = y_angular_head - y_angular_tail 
+
     for i in range(0, n_IV):
         magnet_segment = Wedge((0, 0),
                                1e3 * R4,
@@ -88,6 +101,17 @@ def create_magnet_IV_figure_template(params):
             x_text_width[i],
             y_text_width[i],
             text_width[i])
+
+        fa = FancyArrowPatch(
+            (x_angular_tail[i], y_angular_tail[i]),
+            (x_angular_head[i], y_angular_head[i]),
+            connectionstyle="arc3,rad=.1",
+            arrowstyle="<|-|>, head_length=3, head_width=3",
+            linewidth=0.8,
+            ec='k',
+            fc='k'
+        )
+        axes.add_patch(fa)
 
     axes.text(
         0,
