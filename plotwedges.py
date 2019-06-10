@@ -124,7 +124,7 @@ def create_magnet_IV_figure_template(params):
         )
 
     axes.text(
-        0.1,0.9,
+        0.05,0.95,
         "Arrows angles are in respect to x axis",
         transform=axes.transAxes)
 
