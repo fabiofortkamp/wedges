@@ -14,12 +14,9 @@ def create_magnet_IV_figure_quadrant(params):
     fig = plt.figure(figsize=(FIGSIZE_INCHES, FIGSIZE_INCHES))
     axes = fig.add_subplot(111, aspect='equal')
 
-    R2 = params['R2']
-    R1 = params['R1']
     R4 = params['R4']
     R3 = params['R3']
-    R5 = params['R5']
-    r_lim = R5
+    r_lim = 1.1*R4
 
     axes.set_ylim(0, 1e3 * r_lim)
     axes.set_xlim(0, 1e3 * r_lim)
@@ -147,12 +144,9 @@ def create_magnet_IV_figure_full(params):
     fig = plt.figure(figsize=(2*FIGSIZE_INCHES, 2*FIGSIZE_INCHES))
     axes = fig.add_subplot(111, aspect='equal')
 
-    R2 = params['R2']
-    R1 = params['R1']
     R4 = params['R4']
     R3 = params['R3']
-    R5 = params['R5']
-    r_lim = 1e3*R5
+    r_lim = 1.2e3*R4
 
     axes.set_ylim(-r_lim, r_lim)
     axes.set_xlim(-r_lim, r_lim)
@@ -315,15 +309,12 @@ def create_magnet_IV_figure_full(params):
     return fig, axes
 
 params = {
-    'R1': 30e-3,
-    'R2': 126e-3,
     'R3': 173e-3,
     'R4': 397e-3,
-    'h_fc': 25e-3,
     'n_IV': 4,
     'phi_S_IV': 60
     }
-params["R5"] = params["R4"] + params["h_fc"]
+
 fractions_phi_S = np.array([20,20,20,40])
 
 assert sum(fractions_phi_S) == 100
